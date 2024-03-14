@@ -48,15 +48,18 @@ const quizData = [
     const currentQuizData = quizData[currentQuestion];
     questionElement.textContent = currentQuizData.question;
     optionsElement.innerHTML = "";
-    currentQuizData.options.forEach(option => {
-      const button = document.createElement("button");
-      button.textContent = option;
-      button.addEventListener("click", () => checkAnswer(option));
-      optionsElement.appendChild(button);
-    });
+    
+    for (let i = 0; i < currentQuizData.options.length; i++) {
+        const option = currentQuizData.options[i];
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => checkAnswer(option));
+        optionsElement.appendChild(button);
+    }
+    
     startTimer();
+}
 
-  }
     function checkAnswer(answer) {
       clearInterval(timer);
 
@@ -71,12 +74,24 @@ const quizData = [
       scoreElement.textContent = score;
       disableOptions();
     }
-    function disableOptions(){
+    function disableOptions() {
       const options = optionsElement.querySelectorAll("button");
-      options.forEach(option => {
-        option.disabled = true;
-      });
+      
+      for (let i = 0; i < options.length; i++) {
+          options[i].disabled = true;
+      }
+  }
+  function nextOrFinish() {
+    if (currentQuestion === quizData.length) {
+        finishQuestions();
+    } else {
+        nextQuestion();
     }
+}
+
+function finishQuestions() {
+    document.getElementById('nextButton').textContent = "Finished";
+}
     function nextQuestion() {
       currentQuestion++;
       if (currentQuestion < quizData.length) {
@@ -100,11 +115,11 @@ const quizData = [
 
   function startTimer() {
     let time = 20;
-    timerElement.textContent = "Temps restant: " + time + " secondes";
+    timerElement.textContent = + time + " secondes";
     timer = setInterval(() => {
       time--;
       if (time >= 0) {
-        timerElement.textContent = "Temps restant: " + time + " secondes";
+        timerElement.textContent = + time + " secondes";
       }
       if (time === 0) {
         clearInterval(timer);
@@ -118,9 +133,10 @@ const quizData = [
     score = 0;
     displayQuestion();
     messageElement.textContent = "";
-    playAgainButton.style.display = 'none'; // Cacher le bouton après avoir cliqué
+    playAgainButton.style.display = 'none';
   }
   function startQuiz() {
-    window.location.href = "index.html"; // Rediriger vers la page du quiz
+    window.location.href = "index.html";
   }
+
   displayQuestion();
