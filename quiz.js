@@ -60,20 +60,23 @@ const quizData = [
     startTimer();
 }
 
-    function checkAnswer(answer) {
-      clearInterval(timer);
+function checkAnswer(answer) {
+  clearInterval(timer);
 
-      const currentQuizData = quizData[currentQuestion];
-      if (answer === currentQuizData.answer) {
-        score++;
-        messageElement.textContent = "Bonne réponse!";
-      } else {
-        messageElement.textContent = "Mauvaise réponse!";
-        document.getElementById("message").style.color = "red";
-      }
-      scoreElement.textContent = score;
-      disableOptions();
-    }
+  const currentQuizData = quizData[currentQuestion];
+  if (answer === currentQuizData.answer) {
+      score++;
+      messageElement.textContent = "Bonne réponse!";
+      messageElement.className = "message green"; 
+      messageElement.style.color = "green"
+  } else {
+      messageElement.textContent = "Mauvaise réponse!";
+      messageElement.className = "message red"; 
+      messageElement.style.color = "red";
+  }
+  scoreElement.textContent = score;
+  disableOptions();
+}
     function disableOptions() {
       const options = optionsElement.querySelectorAll("button");
       
@@ -82,15 +85,17 @@ const quizData = [
       }
   }
   function nextOrFinish() {
-    if (currentQuestion === quizData.length) {
-        finishQuestions();
-    } else {
-        nextQuestion();
+    if (currentQuestion === quizData.length - 1) {
+        document.getElementById('nextButton').style.display = "none";
+        document.getElementById('finishButton').style.display = "block";
     }
+    nextQuestion();
 }
 
 function finishQuestions() {
-    document.getElementById('nextButton').textContent = "Finished";
+  document.getElementById('nextButton').style.display = "none";
+  document.getElementById('play-again-btn').style.display = "block";
+  clearInterval(timer); 
 }
     function nextQuestion() {
       currentQuestion++;
@@ -101,40 +106,57 @@ function finishQuestions() {
         endQuiz();
       }
     }
-    function endQuiz(){
-    questionElement.textContent = "Quiz terminé!";
-    optionsElement.innerHTML = "";
-    
-    messageElement.textContent = "Votre score final est: " + score;
-    document.getElementById("message").style.color = "black";
-    clearInterval(timer);
-    playAgainButton.style.display = 'block';
-
-
-    }
-
-  function startTimer() {
-    let time = 20;
-    timerElement.textContent = + time + " secondes";
-    timer = setInterval(() => {
-      time--;
-      if (time >= 0) {
-        timerElement.textContent = + time + " secondes";
+    function endQuiz() {
+      questionElement.textContent = " braaaaaaavo Quiz terminé!";
+      optionsElement.innerHTML = "";
+      document.getElementById("message").style.color = "black";
+      clearInterval(timer);
+      playAgainButton.style.display = 'block';
+      timerElement.textContent = "";
+  
+      if (score==6) {
+          messageElement.textContent = "Votre score final est: " + score + ". Vous êtes très bon !";
+      } else if (score==3) {
+          messageElement.textContent = "Votre score final est: " + score + ". Vous êtes C'est bon ";
       }
-      if (time === 0) {
-        clearInterval(timer);
-        messageElement.textContent = "Temps écoulé!";
-        disableOptions();
+      else if(score==0){
+        messageElement.textContent = "Votre score final est: " + score + ". Besoin de Auto-formation.";
       }
-    }, 1000);
+  }
+    function startTimer() {
+      let time = 20;
+      timerElement.textContent = + time + " secondes";
+      timer = setInterval(() => {
+          time--;
+          if (time >= 0) {
+              timerElement.textContent = + time + " secondes";
+          }
+          if (time === 0) {
+              clearInterval(timer);
+              messageElement.textContent = "Temps finished!";
+              messageElement.className = "message timeout";
+              messageElement.style.color="black"; 
+              disableOptions();
+          }
+      }, 1000);
   }
   function playAgain() {
     currentQuestion = 0;
     score = 0;
     displayQuestion();
     messageElement.textContent = "";
-    playAgainButton.style.display = 'none';
-  }
+    messageElement.className = "message"; // Réinitialise la classe CSS
+    document.getElementById('nextButton').style.display = "block";
+    document.getElementById('play-again-btn').style.display = "none";
+    document.getElementById('exitButton').style.display = "block";
+    startTimer();
+
+    // Force l'application de la classe de couleur spécifique
+    messageElement.classList.remove('red');
+    messageElement.classList.remove('green');
+    messageElement.classList.remove('timeout');
+}
+
   function startQuiz() {
     window.location.href = "index.html";
   }

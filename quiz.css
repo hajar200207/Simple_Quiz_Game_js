@@ -38,15 +38,25 @@ body {
   .score {
     margin-bottom: 10px;
   }
-  
+  /* Style pour le message de mauvaise réponse */
+.message.red {
+  color: red;
+}
+
+/* Style pour le message de bonne réponse */
+.message.green {
+  color: green;
+}
+
+/* Style pour le message de temps écoulé */
+.message.timeout {
+  color: black;
+}
+
   .timer {
     margin-bottom: 10px;
   }
-  .message {
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: green;
-  }
+ 
   button {
     display: block;
     width: 100%;
@@ -61,4 +71,33 @@ body {
   
   button:hover {
     background-color:gold;
+  }
+  @media (max-width: 768px) {
+    .quiz-container {
+      padding: 10px;
+    }
+    .question {
+      font-size: 18px;
+    }
+    .options button {
+      padding: 8px;
+    }
+    button {
+      margin-top: 15px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .quiz-container {
+      padding: 5px;
+    }
+    .question {
+      font-size: 16px;
+    }
+    .options button {
+      padding: 6px;
+    }
+    button {
+      margin-top: 10px;
+    }
   }
